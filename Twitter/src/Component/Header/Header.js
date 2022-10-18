@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 
 import { TwitterLogo, Feature, SetingsStroke } from '../Svg/Svg';
 
-const Header = ({ login, home, label }) => {
+const Header = ({ login, home, label, navigation }) => {
     return (
         login ? (
             <View
@@ -17,7 +17,7 @@ const Header = ({ login, home, label }) => {
                 }}
             >
 
-                <TouchableOpacity style={{ flex: 1 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('Profil')}>
                     <Image
                         source={require('../../Assets/Avatar.png')}
                         style={{
@@ -30,30 +30,37 @@ const Header = ({ login, home, label }) => {
                 </TouchableOpacity>
                 {
                     home ? (
-                        <TouchableOpacity style={{ flex: 1 }}>
-                            <TwitterLogo />
-                        </TouchableOpacity>
+                        <>
+                            <TouchableOpacity style={{ flex: 1 }}>
+                                <TwitterLogo />
+                            </TouchableOpacity>
+                            <TouchableOpacity >
+                                <Feature />
+                            </TouchableOpacity>
+                        </>
                     ) : (
-                        <View style={{
-                            flex: 1,
-                            right: 31
-                        }}
-                        >
-                            <Text
-                                style={{
-                                    color: '#fff',
-                                    fontWeight: 'bold',
-                                    fontSize: 22,
-                                }}
+                        <>
+                            <View style={{
+                                flex: 1,
+                                right: 31
+                            }}
                             >
-                                {label}
-                            </Text>
-                        </View>
+                                <Text
+                                    style={{
+                                        color: '#fff',
+                                        fontWeight: 'bold',
+                                        fontSize: 22,
+                                    }}
+                                >
+                                    {label}
+                                </Text>
+                            </View>
+                            <TouchableOpacity >
+                                <SetingsStroke />
+                            </TouchableOpacity>
+                        </>
                     )
                 }
-                <TouchableOpacity >
-                    <Feature />
-                </TouchableOpacity>
             </View>
         ) : (
             <View
@@ -66,7 +73,7 @@ const Header = ({ login, home, label }) => {
                     paddingHorizontal: 18
                 }}
             >
-                <TouchableOpacity style={{ flex: 1 }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('Profil')}>
                     <Image
                         source={require('../../Assets/Avatar.png')}
                         style={{
@@ -79,7 +86,7 @@ const Header = ({ login, home, label }) => {
                 </TouchableOpacity>
                 <TextInput
                     style={{
-                        backgroundColor: "#687684",
+                        backgroundColor: "#191919",
                         borderRadius: 20,
                         padding: 0,
                         width: 250,

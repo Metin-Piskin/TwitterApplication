@@ -17,10 +17,6 @@ import Notification from './Pages/Notification';
 import Message from './Pages/Message';
 
 import Profil from './Pages/Profil';
-import Lists from './Pages/Lists';
-import Topics from './Pages/Topics';
-import PlaceMarks from './Pages/PlaceMarks';
-import Moments from './Pages/Moments';
 
 import { TabBarHome, TabBarSearch, TabBarBell, TabBarMail } from './Component/Svg/Svg';
 
@@ -33,6 +29,42 @@ const Auth = () => {
     );
 }
 
+const HomeScreen = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen name='Profil' component={Profil} />
+        </Stack.Navigator>
+    )
+}
+
+const SearchScreen = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Search' component={Search} />
+            <Stack.Screen name='Profil' component={Profil} />
+        </Stack.Navigator>
+    )
+}
+
+const NotificationScreen = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Notification' component={Notification} />
+            <Stack.Screen name='Profil' component={Profil} />
+        </Stack.Navigator>
+    )
+}
+
+const MessageScreen = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Message' component={Message} />
+            <Stack.Screen name='Profil' component={Profil} />
+        </Stack.Navigator>
+    )
+}
+
 const BottomTab = () => {
     return (
         <Tab.Navigator
@@ -40,15 +72,16 @@ const BottomTab = () => {
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    backgroundColor: '#000'
+                    backgroundColor: '#000',
+                    borderTopColor: "#191919"
                 }
             }}
         >
             <Tab.Screen
-                name='Home'
-                component={Home}
+                name='HomeScreen'
+                component={HomeScreen}
                 options={{
-                    tabBarIcon: ({ color, focused }) => {
+                    tabBarIcon: ({ focused }) => {
                         if (focused) {
                             return <TabBarHome fill={"#4C9EEB"} />
                         }
@@ -57,8 +90,8 @@ const BottomTab = () => {
                 }}
             />
             <Tab.Screen
-                name='Search'
-                component={Search}
+                name='SearchScreen'
+                component={SearchScreen}
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
@@ -69,8 +102,8 @@ const BottomTab = () => {
                 }}
             />
             <Tab.Screen
-                name='Notification'
-                component={Notification}
+                name='NotificationScreen'
+                component={NotificationScreen}
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
@@ -81,8 +114,8 @@ const BottomTab = () => {
                 }}
             />
             <Tab.Screen
-                name='Message'
-                component={Message}
+                name='MessageScreen'
+                component={MessageScreen}
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
@@ -96,17 +129,6 @@ const BottomTab = () => {
     );
 }
 
-const DrawerNavi = () => {
-    return (
-        <Drawer.Navigator>
-            <Drawer.Screen name='Profil' component={Profil} />
-            <Drawer.Screen name='Lists' component={Lists} />
-            <Drawer.Screen name='Topics' component={Topics} />
-            <Drawer.Screen name='PlaceMarks' component={PlaceMarks} />
-            <Drawer.Screen name='Moments' component={Moments} />
-        </Drawer.Navigator>
-    );
-}
 
 const Router = () => {
     return (
