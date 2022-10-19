@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StatusBar, ScrollView } from 'react-native';
+import Auth from '@react-native-firebase/auth';
 
 import Header from '../../Component/Header';
 import Post from '../../Component/Post';
@@ -12,7 +13,12 @@ const Home = ({ navigation }) => {
             <Button addtext={true} />
             <ScrollView style={{ backgroundColor: "#191919" }}>
                 <StatusBar backgroundColor={'#000'} />
-                <Header login={true} home={true} navigation={navigation} />
+                <Header
+                    login={true}
+                    home={true}
+                    navigation={navigation}
+                    homePress={() => Auth().signOut()}
+                />
                 <Post
                     Name='Metin'
                     Nickname='@MtnPskn'

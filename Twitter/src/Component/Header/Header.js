@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 
 import { TwitterLogo, Feature, SetingsStroke } from '../Svg/Svg';
 
-const Header = ({ login, home, label, navigation }) => {
+const Header = ({ login, home, label, navigation, homePress }) => {
     return (
         login ? (
             <View
@@ -31,7 +31,10 @@ const Header = ({ login, home, label, navigation }) => {
                 {
                     home ? (
                         <>
-                            <TouchableOpacity style={{ flex: 1 }}>
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={homePress}
+                            >
                                 <TwitterLogo />
                             </TouchableOpacity>
                             <TouchableOpacity >

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import auth from "@react-native-firebase/auth";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
+import Welcome from './Pages/Auth/Welcome';
 import Login from './Pages/Auth/Login';
 import SignIn from './Pages/Auth/SignIn';
 
@@ -20,14 +22,6 @@ import Profil from './Pages/Profil';
 
 import { TabBarHome, TabBarSearch, TabBarBell, TabBarMail } from './Component/Svg/Svg';
 
-const Auth = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name='Login' component={Login} />
-            <Stack.Screen name='SignIn' component={SignIn} />
-        </Stack.Navigator>
-    );
-}
 
 const HomeScreen = () => {
     return (
@@ -131,11 +125,32 @@ const BottomTab = () => {
 
 
 const Router = () => {
+    const [userSession, setUserSession] = useState();
+
+    useEffect(() => {
+        auth().onAuthStateChanged(user => {
+            setUserSession(!!user);
+        })
+    }, []);
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name='BottomTab' component={BottomTab} />
-            </Stack.Navigator>
+            {
+                !userSession ? (
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false
+                        }}
+                    >
+                        <Stack.Screen name='Welcome' component={Welcome} />
+                        <Stack.Screen name='Login' component={Login} />
+                        <Stack.Screen name='SignIn' component={SignIn} />
+                    </Stack.Navigator>
+                ) : (
+                    <Stack.Navigator screenOptions={{ headerShown: false }}>
+                        <Stack.Screen name='BottomTab' component={BottomTab} />
+                    </Stack.Navigator>
+                )
+            }
         </NavigationContainer>
     )
 }
