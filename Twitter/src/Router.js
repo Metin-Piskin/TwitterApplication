@@ -19,6 +19,7 @@ import Notification from './Pages/Notification';
 import Message from './Pages/Message';
 
 import Profil from './Pages/Profil';
+import UploadTwitt from './Pages/UploadTwitt';
 
 import { TabBarHome, TabBarSearch, TabBarBell, TabBarMail } from './Component/Svg/Svg';
 
@@ -148,6 +149,7 @@ const Router = () => {
                 ) : (
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                         <Stack.Screen name='BottomTab' component={BottomTab} />
+                        <Stack.Screen name='UploadTwitt' component={UploadTwitt} />
                     </Stack.Navigator>
                 )
             }

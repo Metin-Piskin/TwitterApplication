@@ -9,7 +9,7 @@ import {
     ShareStroke
 } from '../Svg/Svg';
 
-const Post = ({ Name, Nickname, Time, Explanation, resim }) => {
+const Post = ({ post, Nickname, Time }) => {
     return (
         <View
             style={{
@@ -28,7 +28,7 @@ const Post = ({ Name, Nickname, Time, Explanation, resim }) => {
                 marginHorizontal: 20,
             }}>
                 <Image
-                    source={require('../../Assets/Avatar.png')}
+                    source={{ uri: post.profile_picture }}
                     style={{
                         width: 50,
                         height: 50,
@@ -47,20 +47,20 @@ const Post = ({ Name, Nickname, Time, Explanation, resim }) => {
                                 color: '#fff'
                             }}
                         >
-                            {Name}
+                            {post.user}
                         </Text>
                         <Text
                             style={{
                                 marginHorizontal: 5,
-                                color: '#fff'
+                                color: "#191919"
                             }}
                         >
-                            {Nickname}
+                            @{Nickname}
                         </Text>
                         <Text
                             style={{
                                 marginHorizontal: 5,
-                                color: '#fff',
+                                color: "#191919",
                                 flex: 1
                             }}
                         >
@@ -81,16 +81,16 @@ const Post = ({ Name, Nickname, Time, Explanation, resim }) => {
                                 color: '#fff'
                             }}
                         >
-                            {Explanation}
+                            {post.caption}
                         </Text>
                     </View>
                 </View>
             </View>
             {
-                resim ? (
+                post.imageurl ? (
 
                     <Image
-                        source={ resim }
+                        source={{ uri: post.imageurl }}
                         style={{
                             width: 310,
                             height: 270,

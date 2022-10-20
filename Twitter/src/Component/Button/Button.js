@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 import { AddTextİcon, Addİcon } from '../Svg/Svg';
 
-const Button = ({ addtext }) => {
+const Button = ({ addtext, onPress }) => {
     return (
         <TouchableOpacity
             style={{
@@ -18,10 +18,10 @@ const Button = ({ addtext }) => {
                 bottom: 10,
                 zIndex: 1
             }}
+            onPress={onPress}
         >
             {
                 addtext ? (
-
                     <AddTextİcon />
                 ) : (
                     <Addİcon />
