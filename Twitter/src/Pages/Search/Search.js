@@ -14,7 +14,7 @@ const Search = ({ navigation }) => {
                 <Agenda />
                 <Proposal />
             </ScrollView>
-            <Button addtext={true} />
+            <Button addtext={true} onPress={() => navigation.navigate('UploadTwitt')}/>
         </View>
     )
 }

@@ -19,7 +19,7 @@ const Notification = ({ navigation }) => {
           <Text style={styles.Bahsedenlertext}>Bahsedenler</Text>
         </TouchableOpacity>
       </View>
-      <Button addtext={true} />
+      <Button addtext={true} onPress={() => navigation.navigate('UploadTwitt')}/>
     </View>
   )
 }

@@ -10,13 +10,94 @@ import Button from '../../Component/Button';
 
 const Home = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
+
     useEffect(() => {
         firestore().collectionGroup('posts')
             .onSnapshot(snapshot => {
-                setPosts(snapshot.docs.map(post => (
+                setPosts(snapshot?.docs.map(post => (
                     { id: post.id, ...post.data() })))
             })
     }, [])
+
+    const handleLike = (post) => {
+        const currentLikeStatus = !post.likes_by_users.includes(
+            auth().currentUser.email
+        )
+        firestore().collection('users')
+            .doc(post.owner_email)
+            .collection('posts')
+            .doc(post.id)
+            .update(
+                {
+                    likes_by_users: currentLikeStatus ?
+                        firestore.FieldValue.arrayUnion(
+                            auth().currentUser.email
+                        )
+                        : firestore.FieldValue.arrayRemove(
+                            auth().currentUser.email
+                        )
+                }
+            )
+            .then(() => {
+                console.log('like updated')
+            })
+            .catch(error => {
+                console.log("error: ")
+            })
+    }
+    const handleRetweet = (post) => {
+        const currentRetweetStatus = !post.retweets_by_users.includes(
+            auth().currentUser.email
+        )
+        firestore().collection('users')
+            .doc(post.owner_email)
+            .collection('posts')
+            .doc(post.id)
+            .update(
+                {
+                    retweets_by_users: currentRetweetStatus ?
+                        firestore.FieldValue.arrayUnion(
+                            auth().currentUser.email
+                        )
+                        : firestore.FieldValue.arrayRemove(
+                            auth().currentUser.email
+                        )
+                }
+            )
+            .then(() => {
+                console.log('like updated')
+            })
+            .catch(error => {
+                console.log("error: ")
+            })
+    }
+    const handleComment = (post) => {
+        const currentRetweetStatus = !post.comments_by_users.includes(
+            auth().currentUser.email
+        )
+        firestore().collection('users')
+            .doc(post.owner_email)
+            .collection('posts')
+            .doc(post.id)
+            .update(
+                {
+                    comments_by_users: currentRetweetStatus ?
+                        firestore.FieldValue.arrayUnion(
+                            auth().currentUser.email
+                        )
+                        : firestore.FieldValue.arrayRemove(
+                            auth().currentUser.email
+                        )
+                }
+            )
+            .then(() => {
+                console.log('like updated')
+            })
+            .catch(error => {
+                console.log("error: ")
+            })
+    }
+
     return (
         <>
             <Button
@@ -31,7 +112,14 @@ const Home = ({ navigation }) => {
                     navigation={navigation}
                     homePress={() => auth().signOut()}
                 />
-                {posts.map((post, index) => <Post key={index} post={post} />)}
+                {posts.map((post, index) =>
+                    <Post
+                        key={index}
+                        post={post}
+                        likePress={() => handleLike(post)}
+                        retweetPress={() => handleRetweet(post)}
+                        commentPress={() => handleComment(post)}
+                    />)}
                 {/*
                 <Post
                     Name='Metin'

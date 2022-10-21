@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import { Formik } from "formik";
 import auth from "@react-native-firebase/auth";
 import * as Yup from 'yup';
@@ -32,7 +32,7 @@ const Login = ({ navigation }) => {
                     },
                     {
                         text: 'Kayıt Ol',
-                        onPress: () => navigation.navigate('Sign'),
+                        onPress: () => navigation.navigate('SignIn'),
                     },
                 ]
             );

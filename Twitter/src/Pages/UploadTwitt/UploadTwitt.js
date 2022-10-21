@@ -31,9 +31,10 @@ const UploadTwitt = ({ navigation }) => {
       .where('owner_uid', '==', user.uid)
       .limit(1)
       .onSnapshot(
-        snapshot => snapshot.docs.map(doc => {
+        snapshot => !snapshot.docs.map(doc => {
           setCurrentLoggedInUser({
-            username: doc.data().username,
+            name: doc.data().name,
+            nickname: doc.data().nickname,
             profilePicture: doc.data().profile_picture
           }
           )
@@ -52,13 +53,16 @@ const UploadTwitt = ({ navigation }) => {
       .collection('posts')
       .add({
         imageurl: imageurl,
-        user: currentLoggedInUser.username,
+        name: currentLoggedInUser.name,
+        nickname: currentLoggedInUser.nickname,
         profile_picture: currentLoggedInUser.profilePicture,
         owner_uid: auth().currentUser.uid,
         owner_email: auth().currentUser.email,
         caption: caption,
         createdAt: firestore.FieldValue.serverTimestamp(),
         likes_by_users: [],
+        retweets_by_users: [],
+        comments_by_users: [],
         comments: [],
       })
       .then(() => { navigation.goBack() })
@@ -69,6 +73,26 @@ const UploadTwitt = ({ navigation }) => {
     imageurl: Yup.string().url().required('A url is required'),
     caption: Yup.string().max(2200, 'Caption has Reached the character limit.')
   });
+
+  const [CurrentLoggedInUserr, setCurrentLoggedInUserr] = useState(true)
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const user = auth().currentUser
+    firestore()
+      .collection('users')
+      .where('owner_uid', '==', user.uid)
+      .get()
+      .then(querySnapshot => {
+        //console.log('Total users: ', querySnapshot.size);
+        querySnapshot.forEach(documentSnapshot => {
+          setCurrentLoggedInUserr(documentSnapshot.data());
+        });
+      });
+    if (!!CurrentLoggedInUserr) {
+      setLoading(false);
+    }
+  }, [])
 
   return (
     <Formik
@@ -127,7 +151,7 @@ const UploadTwitt = ({ navigation }) => {
 
           <View style={{ flexDirection: 'row' }}>
             <Image
-              source={require('../../Assets/Avatar.png')}
+              source={{ uri: CurrentLoggedInUserr.profile_picture }}
               style={{
                 width: 50,
                 height: 50,

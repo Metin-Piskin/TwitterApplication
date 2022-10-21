@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import auth from "@react-native-firebase/auth";
+
 import Button from '../../Component/Button';
-import { DownArrow } from '../../Component/Svg/Svg';
+import { LeftArrow } from '../../Component/Svg/Svg';
 
 const Profil = ({ navigation }) => {
+  const [CurrentLoggedInUser, setCurrentLoggedInUser] = useState(true)
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const user = auth().currentUser
+    firestore()
+      .collection('users')
+      .where('owner_uid', '==', user.uid)
+      .get()
+      .then(querySnapshot => {
+        //console.log('Total users: ', querySnapshot.size);
+        querySnapshot.forEach(documentSnapshot => {
+          setCurrentLoggedInUser(documentSnapshot.data());
+        });
+      });
+    if (!!CurrentLoggedInUser) {
+      setLoading(false);
+    }
+  }, [])
   return (
     <View
       style={{
@@ -26,11 +48,12 @@ const Profil = ({ navigation }) => {
             left: 10,
             top: 15,
             padding: 12,
-            borderRadius: 20
+            paddingHorizontal:15,
+            borderRadius: 20,
           }}
           onPress={() => navigation.goBack()}
         >
-          <DownArrow />
+          <LeftArrow />
         </TouchableOpacity>
       </View>
       <View
@@ -46,7 +69,7 @@ const Profil = ({ navigation }) => {
           }}
         >
           <Image
-            source={require('../../Assets/Avatar.png')}
+            source={{ uri: CurrentLoggedInUser.profile_picture }}
             style={{
               resizeMode: 'contain',
               width: 80,
@@ -87,13 +110,13 @@ const Profil = ({ navigation }) => {
               fontSize: 25,
 
             }}
-          >Metin</Text>
+          >{CurrentLoggedInUser.name}</Text>
           <Text
             style={{
               color: '#687684',
               marginBottom: 15
             }}
-          >@MtnPskn</Text>
+          >@{CurrentLoggedInUser.nickname}</Text>
           <Text
             style={{
               color: '#687684',

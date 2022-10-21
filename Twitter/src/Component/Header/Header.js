@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import auth from "@react-native-firebase/auth";
 
 import { TwitterLogo, Feature, SetingsStroke } from '../Svg/Svg';
 
 const Header = ({ login, home, label, navigation, homePress }) => {
+    const [CurrentLoggedInUser, setCurrentLoggedInUser] = useState(true)
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const user = auth().currentUser
+        firestore()
+            .collection('users')
+            .where('owner_uid', '==', user.uid)
+            .get()
+            .then(querySnapshot => {
+                //console.log('Total users: ', querySnapshot.size);
+                querySnapshot.forEach(documentSnapshot => {
+                    setCurrentLoggedInUser(documentSnapshot.data());
+                });
+            });
+        if (!!CurrentLoggedInUser) {
+            setLoading(false);
+        }
+    }, [])
     return (
         login ? (
             <View
@@ -19,7 +40,7 @@ const Header = ({ login, home, label, navigation, homePress }) => {
 
                 <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('Profil')}>
                     <Image
-                        source={require('../../Assets/Avatar.png')}
+                        source={{ uri: CurrentLoggedInUser.profile_picture }}
                         style={{
                             width: 32,
                             height: 32,
@@ -78,7 +99,7 @@ const Header = ({ login, home, label, navigation, homePress }) => {
             >
                 <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('Profil')}>
                     <Image
-                        source={require('../../Assets/Avatar.png')}
+                        source={{ uri: CurrentLoggedInUser.profile_picture }}
                         style={{
                             width: 32,
                             height: 32,

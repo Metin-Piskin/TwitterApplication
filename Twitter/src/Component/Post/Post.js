@@ -1,15 +1,19 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import auth from "@react-native-firebase/auth";
 
 import {
     DownArrow,
     CommentStroke,
     RetweetStroke,
+    RetweetSolid,
     HeartStroke,
+    HeartSolid,
     ShareStroke
 } from '../Svg/Svg';
 
-const Post = ({ post, Nickname, Time }) => {
+const Post = ({ post, likePress, retweetPress, commentPress }) => {
     return (
         <View
             style={{
@@ -47,7 +51,7 @@ const Post = ({ post, Nickname, Time }) => {
                                 color: '#fff'
                             }}
                         >
-                            {post.user}
+                            {post.name}
                         </Text>
                         <Text
                             style={{
@@ -55,7 +59,7 @@ const Post = ({ post, Nickname, Time }) => {
                                 color: "#191919"
                             }}
                         >
-                            @{Nickname}
+                            @{post.nickname}
                         </Text>
                         <Text
                             style={{
@@ -64,7 +68,7 @@ const Post = ({ post, Nickname, Time }) => {
                                 flex: 1
                             }}
                         >
-                            {Time}
+                            {/*post.createdAt*/}
                         </Text>
                         <TouchableOpacity
                             style={{
@@ -112,14 +116,95 @@ const Post = ({ post, Nickname, Time }) => {
                     marginBottom: 7
                 }}
             >
-                <TouchableOpacity style={{ flex: 1, }}>
-                    <CommentStroke fill={"#687684"} />
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                    onPress={commentPress}
+                >
+                    {post.comments_by_users.includes(
+                        auth().currentUser.email
+                    ) ?
+                        <CommentStroke fill={"#687684"} />
+                        : <CommentStroke fill={"#687684"} />
+                    }
+                    {
+                        post.comments_by_users.length > 0 ? (
+
+                            <Text
+                                style={{
+                                    color: "#687684",
+                                    marginLeft: 5
+                                }}
+                            >
+                                {post.comments_by_users.length}
+                            </Text>
+                        ) : (
+                            <View></View>
+                        )
+                    }
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1, }}>
-                    <RetweetStroke fill={"#687684"} />
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                    onPress={retweetPress}
+                >
+                    {post.retweets_by_users.includes(
+                        auth().currentUser.email
+                    ) ?
+                        <RetweetSolid />
+                        : <RetweetStroke fill={"#687684"} />
+                    }
+                    {
+                        post.retweets_by_users.length > 0 ? (
+
+                            <Text
+                                style={{
+                                    color: "#687684",
+                                    marginLeft: 5
+                                }}
+                            >
+                                {post.retweets_by_users.length}
+                            </Text>
+                        ) : (
+                            <View></View>
+                        )
+                    }
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1, }}>
-                    <HeartStroke fill={"#687684"} />
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                    onPress={likePress}
+                >
+                    {post.likes_by_users.includes(
+                        auth().currentUser.email
+                    ) ?
+                        <HeartSolid />
+                        : <HeartStroke fill={"#687684"} />
+                    }
+                    {
+                        post.likes_by_users.length > 0 ? (
+
+                            <Text
+                                style={{
+                                    color: "#687684",
+                                    marginLeft: 5
+                                }}
+                            >
+                                {post.likes_by_users.length}
+                            </Text>
+                        ) : (
+                            <View></View>
+                        )
+                    }
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <ShareStroke fill={"#687684"} />

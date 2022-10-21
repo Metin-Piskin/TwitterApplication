@@ -11,7 +11,8 @@ import WelcomeHeader from '../../../Component/WelcomeHeader';
 
 const initialFormValues = {
     usermail: "",
-    username: "",
+    name: "",
+    nickname: "",
     password: "",
 };
 
@@ -19,6 +20,7 @@ const PLACEHOLDER_IMAGE = 'https://media.istockphoto.com/vectors/no-image-vector
 
 const SignIn = ({ navigation }) => {
     const [thumbnailurl, setThumbnailurl] = useState(PLACEHOLDER_IMAGE);
+    const [loading, setLoading] = useState(false);
 
     const handleFormSubmit = async (formValues) => {
         try {
@@ -27,11 +29,11 @@ const SignIn = ({ navigation }) => {
                 .doc(formValues.usermail)
                 .set({
                     owner_uid: authUser.user.uid,
-                    username: formValues.username,
+                    name: formValues.name,
+                    nickname: formValues.nickname,
                     email: formValues.usermail,
                     profile_picture: formValues.imageurl,
                 });
-            navigation.navigate('Login');
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -40,7 +42,8 @@ const SignIn = ({ navigation }) => {
 
     const LoginFormSchema = Yup.object().shape({
         usermail: Yup.string().email().required('Email is required'),
-        username: Yup.string().required().min(2, 'A username is required'),
+        name: Yup.string().required().min(2, 'A username is required'),
+        nickname: Yup.string().required().min(2, 'A nickname is required'),
         password: Yup.string().required().min(6, 'Password must be at least 6 characters'),
         imageurl: Yup.string().url().required('A url is required'),
     });
@@ -80,7 +83,8 @@ const SignIn = ({ navigation }) => {
                                 style={{
                                     with: 100,
                                     height: 100,
-                                    resizeMode: 'contain'
+                                    resizeMode: 'contain',
+                                    marginBottom: 19
                                 }}
                             />
                             <View
@@ -108,19 +112,37 @@ const SignIn = ({ navigation }) => {
                                     }}
                                 />
                                 <TextInput
-                                    placeholder="Kullanıcı Adı"
+                                    placeholder="Adı"
                                     placeholderTextColor={"#687684"}
-                                    onChangeText={handleChange('username')}
-                                    value={values.username}
+                                    onChangeText={handleChange('name')}
+                                    value={values.name}
                                     autoCapitalize="none"
                                     keyboardType="email-address"
                                     textContentType="emailAddress"
-                                    onBlur={handleBlur('username')}
+                                    onBlur={handleBlur('name')}
                                     style={{
                                         color: '#fff',
                                         borderBottomWidth: 0.4,
                                         borderColor:
-                                            1 > values.username || values.username.length > 5
+                                            1 > values.name || values.name.length > 3
+                                                ? "#687684"
+                                                : '#FF0000',
+                                    }}
+                                />
+                                <TextInput
+                                    placeholder="Kullanıcı Adı"
+                                    placeholderTextColor={"#687684"}
+                                    onChangeText={handleChange('nickname')}
+                                    value={values.nickname}
+                                    autoCapitalize="none"
+                                    keyboardType="email-address"
+                                    textContentType="emailAddress"
+                                    onBlur={handleBlur('nickname')}
+                                    style={{
+                                        color: '#fff',
+                                        borderBottomWidth: 0.4,
+                                        borderColor:
+                                            1 > values.nickname || values.nickname.length > 5
                                                 ? "#687684"
                                                 : '#FF0000',
                                     }}

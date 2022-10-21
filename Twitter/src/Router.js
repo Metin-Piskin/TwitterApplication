@@ -21,7 +21,16 @@ import Message from './Pages/Message';
 import Profil from './Pages/Profil';
 import UploadTwitt from './Pages/UploadTwitt';
 
-import { TabBarHome, TabBarSearch, TabBarBell, TabBarMail } from './Component/Svg/Svg';
+import {
+    TabBarHome,
+    TabBarHomeOf,
+    TabBarSearch,
+    TabBarSearchOf,
+    TabBarBell,
+    TabBarBellOf,
+    TabBarMail,
+    TabBarMailOf
+} from './Component/Svg/Svg';
 
 
 const HomeScreen = () => {
@@ -80,7 +89,7 @@ const BottomTab = () => {
                         if (focused) {
                             return <TabBarHome fill={"#4C9EEB"} />
                         }
-                        return <TabBarHome fill={"#687684"} />
+                        return <TabBarHomeOf />
                     }
                 }}
             />
@@ -90,7 +99,7 @@ const BottomTab = () => {
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
-                            return <TabBarSearch fill={"#4C9EEB"} />
+                            return <TabBarSearchOf />
                         }
                         return <TabBarSearch fill={"#687684"} />
                     }
@@ -102,7 +111,7 @@ const BottomTab = () => {
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
-                            return <TabBarBell fill={"#4C9EEB"} />
+                            return <TabBarBellOf />
                         }
                         return <TabBarBell fill={"#687684"} />
                     }
@@ -114,7 +123,7 @@ const BottomTab = () => {
                 options={{
                     tabBarIcon: ({ color, focused }) => {
                         if (focused) {
-                            return <TabBarMail fill={"#4C9EEB"} />
+                            return <TabBarMailOf />
                         }
                         return <TabBarMail fill={"#687684"} />
                     }
